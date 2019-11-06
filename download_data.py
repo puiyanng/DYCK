@@ -8,12 +8,12 @@ instrument_to_name_map = [("^GSPC", "SP"), ("^NYA", "NYSE"), ("^DJI", "DJI"), ("
     , ("^IXIC", "NASDAQ"), ("^FTSE", "FTSE"), ("JPY=X", "USDJPY"), ("GBP=X", "USDGBP"), ("EUR=X", "USDEUR"),
                           ("^N225", "N225"), ("CNY=X", "USDCNY")]
 
-
-def file_name(inst, int_per):
-    return "data/" + inst + "_" + int_per[0] + "_" + int_per[1] + ".csv"
-
-
 interval_period = ("1d", "5y")
+
+def file_name(inst):
+    return "data/" + inst + "_" + interval_period[0] + "_" + interval_period[1] + ".csv"
+
+
 
 
 def download():

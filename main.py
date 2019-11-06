@@ -1,8 +1,32 @@
-import pandas as pd
+import modelling as md
 import download_data as dd
-import feature_engineering as fe
+import pandas as pd
+from sklearn.model_selection import train_test_split
 
-data = pd.read_csv(dd.file_name("data", dd.interval_period))
+data_file = dd.file_name("data_normalized")
+data = pd.read_csv(data_file)
 
-data["Signal"] = fe.generate_y(data, "DJI_Close")
-data.to_csv(dd.file_name("data", dd.interval_period))
+data = data.drop(["Date"], axis=1)
+
+xTrain, xTest, yTrain, yTest = train_test_split(data.drop(["Signal"], axis=1),
+                                                data["Signal"], test_size=0.2,
+                                                random_state=42)
+
+prediction = pd.DataFrame()
+results = pd.DataFrame()
+results["true_y"] = yTest
+
+ada = md.fit_ada_boost(xTrain, yTrain)
+results["prediction"] = ada.predict(xTest)
+print("Adaboost Classifier")
+print(md.get_results(results["true_y"], results["prediction"]))
+
+rf = md.fit_random_forest(xTrain, yTrain)
+results["prediction"] = rf.predict(xTest)
+print("Random Forest Classifier")
+print(md.get_results(results["true_y"], results["prediction"]))
+
+svm = md.fit_SVM(xTrain, yTrain)
+results["prediction"] = svm.predict(xTest)
+print("SVM Classifier")
+print(md.get_results(results["true_y"], results["prediction"]))
