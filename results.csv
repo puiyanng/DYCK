@@ -2,3 +2,5 @@ Model,%age correct,feature excluded,comments
 AdaBoost Classifier,54.40%,Date,"Preliminary, 80/20 randomly sliced"
 Random Forest Classifier,50.80%,Date,"Preliminary, 80/20 randomly sliced"
 SVM,54.80%,Date,"Preliminary, 80/20 randomly sliced"
+KNN, 52.8,Date,"Preliminary, 80/20 randomly sliced"
+Gradient Boosting Classifier,54.40%,Date,"Preliminary, 80/20 randomly sliced"

@@ -89,3 +89,22 @@ def normalize_data(data, save=False):
 # Non-normalized data should be fed to this function
 def add_technical_indicators(raw_data):
     return ta.add_all_ta_features(raw_data, "Open", "High", "Low", "Close", "Volume", fillna=True)
+
+
+def generate_y_reg(df,col_name):
+    y = df[col_name].shift(-1)
+    df2 = y.to_frame(name='Y')
+    y = log_returns(df2, 'Y')
+    return y
+
+
+def generate_data_reg():
+    data = pd.read_csv(dd.file_name("data"))
+    data_norm = pd.read_csv(dd.file_name("data_normalized"))
+
+    data_norm = data_norm.drop(["Signal"], axis=1)
+    y = generate_y_reg(data, 'Close').shift(-1)
+    data_norm.insert(data_norm.columns.get_loc('Date') + 1, 'Y', y)
+    data_norm = data_norm.drop(["Unnamed: 0"], axis=1)  #data_normalizaed data somehow got an Index row
+    data_norm.dropna().to_csv(dd.file_name("data_reg"), index=False, float_format='%.9f')
+
