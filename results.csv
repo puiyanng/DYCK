@@ -1,4 +1,9 @@
-Model,%age correct,feature excluded,comments
-AdaBoost Classifier,54.40%,Date,"Preliminary, 80/20 randomly sliced"
-Random Forest Classifier,50.80%,Date,"Preliminary, 80/20 randomly sliced"
-SVM,54.80%,Date,"Preliminary, 80/20 randomly sliced"
+Model,%age correct,feature excluded,# of years,comments
+AdaBoost Classifier,54.40%,Date,5,"Preliminary, 80/20 randomly sliced"
+Random Forest Classifier,50.80%,Date,5,"Preliminary, 80/20 randomly sliced"
+SVM,54.80%,Date,5,"Preliminary, 80/20 randomly sliced"
+AdaBoost Classifier,53.00%,Date,10,"Preliminary, 80/20 randomly sliced"
+Random Forest Classifier,50.60%,Date,10,"Preliminary, 80/20 randomly sliced"
+SVM,53.00%,Date,10,"Preliminary, 80/20 randomly sliced"
+KNN,52.6,Date,10,"Preliminary, 80/20 randomly sliced"
+Gradient Boost,53,Date,10,"Preliminary, 80/20 randomly sliced"
