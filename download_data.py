@@ -29,5 +29,5 @@ def download():
             proxy=None
         )
         # Please follow this naming convention across the project
-        file = file_name(inst[1], interval_period)
+        file = file_name(inst[1])
         data.to_csv(file)
