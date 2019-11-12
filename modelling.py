@@ -1,9 +1,10 @@
 import numpy as np
+import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.model_selection import RandomizedSearchCV
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import GridSearchCV, ShuffleSplit
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 
@@ -11,7 +12,7 @@ def fit_ada_boost(features, labels):
     param_dist = {
         'n_estimators': [50, 100, 300, 1000, 1500, 2000],
         'learning_rate': [0.01, 0.05, 0.1, 0.3, 1]
-        # 'loss': ['linear', 'square', 'exponential']
+        #'loss': ['linear', 'square', 'exponential']
     }
 
     pre_gs_inst = RandomizedSearchCV(AdaBoostClassifier(),
@@ -22,7 +23,6 @@ def fit_ada_boost(features, labels):
 
     model = pre_gs_inst.fit(features, labels)
     return model
-
 
 def fit_random_forest(features, labels):
     n_estimators = [int(x) for x in np.linspace(start=200, stop=2000, num=10)]
@@ -54,16 +54,10 @@ def fit_random_forest(features, labels):
     model = model.fit(features, labels)
     return model
 
-
-
-def get_results(y_true, pred):
-    return (y_true == pred).value_counts()
-
-
 def fit_SVM(features, labels):
     svm = SVC(kernel='rbf', probability=True)
     param_grid = {'C': [1e-3, 1e-2, 1e-1, 1, 10, 100, 1000], 'gamma': [0.001, 0.0001]}
-    grid_search = GridSearchCV(svm, param_grid, n_jobs=8, verbose=1)
+    grid_search = GridSearchCV(svm, param_grid, n_jobs = 8, verbose=1)
     model = grid_search.fit(features, labels)
     return model
 
@@ -96,3 +90,6 @@ def fit_gradient_boosting(features, labels, withTuning):
     model.fit(features, labels)
 
     return model
+
+def get_results(y_true,pred):
+    return (y_true == pred).value_counts()
