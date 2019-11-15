@@ -137,6 +137,7 @@ def generate_data_reg():
     data_norm = data_norm.drop(["Signal"], axis=1)
     y = generate_y_reg(data, 'Close').shift(-1)
     data_norm.insert(data_norm.columns.get_loc('Date') + 1, 'Y', y)
+    data_norm = data_norm.drop(["Unnamed: 0"], axis=1)  # data_normalizaed data somehow got an Index row
     data_norm.dropna().to_csv(dd.file_name("data_reg"), index=False, float_format='%.9f')
 
 
@@ -192,7 +193,6 @@ def feature_importance(df):
 def add_technical_indicators(raw_data):
     return ta.add_all_ta_features(raw_data, "Open", "High", "Low", "Close", "Volume", fillna=True)
 
-
 def normalize_data(file_name, normal_file_name):
     data = pd.read_csv("data/" + file_name)
     data = data.ffill(axis=0)
@@ -202,3 +202,4 @@ def normalize_data(file_name, normal_file_name):
             data[col] = data[col].replace(to_replace=0, method='ffill')
 
     data.to_csv("data/" + normal_file_name)
+
