@@ -8,6 +8,15 @@ from sklearn.model_selection import GridSearchCV, ShuffleSplit
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 
+from tqdm import tqdm
+
+import torch.nn as nn
+import torch
+from torch.autograd import Variable
+import sys
+
+
+
 def fit_ada_boost(features, labels):
     param_dist = {
         'n_estimators': [50, 100, 300, 1000, 1500, 2000],
@@ -90,6 +99,129 @@ def fit_gradient_boosting(features, labels, withTuning):
     model.fit(features, labels)
 
     return model
+
+def fit_LSTM(features, labels, withTuning):
+
+    INPUT_SIZE = 17
+    HIDDEN_SIZE = 64
+    NUM_LAYERS = 2
+    OUTPUT_SIZE = 1
+
+    param_grid = {'learning_rate': [0.001, 0.01, 0.1],
+                  'num_epochs': [25, 50, 100]}
+
+    # param_grid = {'learning_rate': [0.001, 0.05, 0.01],
+    #               'num_epochs': [2]}
+
+    learning_rate = 0.001
+    num_epochs = 50
+
+    features = features.to_numpy()
+    labels = labels.to_numpy()
+
+    # Simple split 80:20
+
+    sizeTrain = int(len(labels) * 20 / 100)
+    sizeTest = len(labels) - sizeTrain
+
+    XTrain = features[:sizeTrain]
+    XTest = features[sizeTest:]
+
+    yTrain = labels[:sizeTrain]
+    yTest = labels[sizeTest:]
+
+    XTrain = np.reshape(XTrain, (XTrain.shape[0], 1, XTrain.shape[1]))
+    XTest = np.reshape(XTest, (XTest.shape[0], 1, XTest.shape[1]))
+
+    rnn = RNN(INPUT_SIZE, HIDDEN_SIZE, NUM_LAYERS, OUTPUT_SIZE)
+
+    optimiser = torch.optim.Adam(rnn.parameters(), lr=learning_rate)
+    criterion = nn.MSELoss()
+
+    hidden_state = None
+
+    best_nn = None
+    best_loss = 9999.9
+    best_param = None
+
+    all_train_epoches = {}
+    all_test_loss = {}
+
+    for learning_rate in param_grid['learning_rate']:
+        for num_epochs in param_grid['num_epochs']:
+
+            print(learning_rate, num_epochs)
+
+            cur_nn = None
+            cur_loss = 9999.9
+            cur_param = None
+            cur_epoches = []
+
+            for epoch in tqdm(range(num_epochs)):
+
+                inputs = Variable(torch.from_numpy(XTrain).float())
+                labels = Variable(torch.from_numpy(yTrain).float())
+
+                output, hidden_state = rnn(inputs, hidden_state)
+
+                loss = criterion(output.view(-1), labels)
+                optimiser.zero_grad()
+                loss.backward(retain_graph=True)
+                optimiser.step()
+                # print('epoch {}, loss {}'.format(epoch,loss.item()))
+
+                cur_nn = output, hidden_state
+                cur_loss = loss.item()
+                cur_param = learning_rate, num_epochs
+                cur_epoches.append(loss.item())
+
+            all_train_epoches[str(learning_rate) + "|" + str(num_epochs)] = cur_epoches
+
+            trueValue = Variable(torch.from_numpy(yTest).float())
+            inputs = Variable(torch.from_numpy(XTest).float())
+
+            predicted, b = rnn(inputs, hidden_state)
+            test_loss = criterion(predicted.view(-1), trueValue)
+
+            all_test_loss[str(learning_rate) + "|" + str(num_epochs)] = test_loss.item()
+
+            if best_loss > test_loss.item():
+                best_loss = test_loss
+                best_cnn = cur_nn
+                best_param = cur_param
+
+
+    print("For LSTM: ")
+    print("-" * 30)
+    print('Best score: {}'.format(best_loss))
+    print('Running at (rate: {}, epoch: {})'.format(best_param[0], best_param[1]))
+
+    print("All Train Epoches: ")
+    print(all_train_epoches)
+    print("All Test Epoches: ")
+    print(all_test_loss)
+
+    return best_cnn, best_param
+
+class RNN(nn.Module):
+    def __init__(self, i_size, h_size, n_layers, o_size):
+        super(RNN, self).__init__()
+
+        self.rnn = nn.LSTM(
+            input_size=i_size,
+            hidden_size=h_size,
+            num_layers=n_layers
+        )
+        self.out = nn.Linear(h_size, o_size)
+
+    def forward(self, x, h_state):
+        r_out, hidden_state = self.rnn(x, h_state)
+
+        hidden_size = hidden_state[-1].size(-1)
+        r_out = r_out.view(-1, hidden_size)
+        outs = self.out(r_out)
+
+        return outs, hidden_state
 
 def get_results(y_true,pred):
     return (y_true == pred).value_counts()
