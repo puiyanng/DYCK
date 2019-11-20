@@ -194,7 +194,6 @@ def feature_importance(df):
 def add_technical_indicators(raw_data):
     return ta.add_all_ta_features(raw_data, "Open", "High", "Low", "Close", "Volume", fillna=True)
 
-
 def normalize_data(file_name, normal_file_name):
     data = pd.read_csv("data/" + file_name)
     data = data.ffill(axis=0)
@@ -204,7 +203,6 @@ def normalize_data(file_name, normal_file_name):
             data[col] = data[col].replace(to_replace=0, method='ffill')
 
     data.to_csv("data/" + normal_file_name)
-
 
 def ordered_train_test_split(data, y_col_name, ratio=80):
     if (ratio > 99 or ratio < 1):
