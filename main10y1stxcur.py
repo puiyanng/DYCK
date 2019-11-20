@@ -5,7 +5,7 @@ import os
 import numpy as np
 def start():
     data = pd.read_csv(
-        "data/data_normalized_1d_5y.csv")  # Note, this the 10 years TECHNICAL INDICATORS DATA. Decide which one to use.
+        "data/data_normalized_1d_10y.csv")  # Note, this the 10 years TECHNICAL INDICATORS DATA. Decide which one to use.
 
     data = data.drop(["Date"], axis=1)
     data = data.drop(["Unnamed: 0"], axis=1)
@@ -13,7 +13,7 @@ def start():
     data = data.diff(periods=1) # we need to try without any differencing, with 1 period differencing and with 2 period differencing.
     data["Signal"] = signal
 
-    print("data/data_normalized_1d_5y.csv")
+    print("data/data_normalized_1d_10y.csv")
     print("periods=1")
     # print("All data")
     # print(data)
@@ -36,8 +36,6 @@ def start():
     # print("ARIMA Classifier")
     # print(md.get_results(results["true_y"], results["prediction"]))
 
-    return
-
     if True:
         print('-' * 60)
         ada = md.fit_ada_boost(xTrain, yTrain, True)
@@ -45,7 +43,6 @@ def start():
         print("Adaboost Classifier")
         print(results["prediction"])
         print(md.get_results(results["true_y"], fe.generate_y(results, "prediction")))
-    return
 
     if True:
         print("-" * 60)

@@ -15,6 +15,8 @@ from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
 
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 from sklearn.metrics import accuracy_score, mean_squared_error
 from sklearn.preprocessing import MinMaxScaler
@@ -159,9 +161,7 @@ def get_mse(y_true, pred, scaler_label):
 # 1. Remove the additional column ['Unnamed: 0']
 # 2. Replace the 2 with 0 in label since the output layer of neural network only accept [0, 1]
 def reconstruct(xTrain, xTest, yTrain, yTest):
-    return xTrain.drop(columns=['Unnamed: 0'], axis=1), xTest.drop(columns=['Unnamed: 0'], axis=1), yTrain.replace(2,
-                                                                                                                   0), yTest.replace(
-        2, 0)
+    return xTrain.drop(columns=['Unnamed: 0'], axis=1), xTest.drop(columns=['Unnamed: 0'], axis=1), yTrain.replace(2,0), yTest.replace(2, 0)
 
 
 def fit_FNN(features, labels, withTuning=False):

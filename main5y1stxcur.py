@@ -36,7 +36,6 @@ def start():
     # print("ARIMA Classifier")
     # print(md.get_results(results["true_y"], results["prediction"]))
 
-    return
 
     if True:
         print('-' * 60)
@@ -45,7 +44,6 @@ def start():
         print("Adaboost Classifier")
         print(results["prediction"])
         print(md.get_results(results["true_y"], fe.generate_y(results, "prediction")))
-    return
 
     if True:
         print("-" * 60)
