@@ -6,18 +6,14 @@ Feature transformation:
 - Put together the S&P OHLC, S&P vol and closing prices of all the potential features in one file
 - Normalize the data: Calculate daily log returns on the price data
 - Put all of the above in one file
-
 Data integration:
 - It integrates all data S&P500, DJI, FTSE, N225, GOLD, and exchange rates as a single csv file.
 - Keeps in mind that it's just raw data, meaning that missing data has not been handled. The missing data can be due to different rest days across different markets. (US, UK, Japan)
-
 Feature selection:
 - Choose the top 4 indeces using:
 - Perform correlation matrix analysis
 - PCA
 - Make a call in case of conflict between the above 2 methods i.e. pick what we think is better
-
-
 '''
 
 import pandas as pd
