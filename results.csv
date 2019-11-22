@@ -1,4 +1,4 @@
-Model,"%age correct",feature excluded,"# of years",comments
+Model,%age correct,feature excluded,# of years,comments
 AdaBoost Classifier,54.40%,Date,5,"Preliminary, 80/20 randomly sliced"
 Random Forest Classifier,50.80%,Date,5,"Preliminary, 80/20 randomly sliced"
 SVM,54.80%,Date,5,"Preliminary, 80/20 randomly sliced"
