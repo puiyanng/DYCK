@@ -14,3 +14,11 @@ Random Forest Classifier,55.00%,Date,5,"first order differencing, 80/20 ordered 
 AdaBoost Classifier,55.30%,Date,5,"first order differencing, 80/20 ordered slice"
 SVM,55.30%,Date,5,"first order differencing, 80/20 ordered slice"
 KNN,53.80%,Date,5,"first order differencing, 80/20 ordered slice"
+
+AdaBoost Classifier,52.8,Date,10,"Stationary data set , train test sequence split"
+SVM,54.0,-,Date,10,"Stationary data set , train test sequence split"
+KNN,52.2,-,Date,10,"Stationary data set , train test sequence split"
+Gradient Boosting,54.0,-,Date,10,"Stationary data set , train test sequence split"
+Random Forest Classifier,50.4,-,Date,10,"Stationary data set , train test sequence split"
+Logistic Regression,54,-,Date,10,"Stationary data set , train test sequence split"
+FNN,46,-,Date,10,"Stationary data set , train test sequence split"
