@@ -3,7 +3,7 @@ import pandas as pd
 import feature_engineering as fe
 import os
 data = pd.read_csv(
-    "data/data_normalized_1d_10y.csv")  # Note, this the 10 years TECHNICAL INDICATORS DATA. Decide which one to use.
+    "technical_analysis_results.csv")  # Note, this the 10 years TECHNICAL INDICATORS DATA. Decide which one to use.
 
 data = data.drop(["Date"], axis=1)
 data = data.drop(["Unnamed: 0"], axis=1)
