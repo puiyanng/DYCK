@@ -224,3 +224,12 @@ def apply_min_max_scaler(file_name, normal_file_name):
             data[col] = scaler.fit_transform(data[col].values.reshape(-1, 1))
             data[col] = data[col].replace(to_replace=0, method='ffill')
     data.to_csv("data/" + normal_file_name, index=False)
+
+
+def order_differencing(data, period):
+    data = data.drop(["Unnamed: 0"], axis=1)
+    signal = data["Signal"]
+    data = data.diff(periods=period)
+    data["Signal"] = signal
+    data = data.dropna()
+    return data
