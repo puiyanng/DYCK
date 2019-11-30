@@ -2,12 +2,7 @@ import modelling as md
 import pandas as pd
 import feature_engineering as fe
 import os
-data = pd.read_csv(
-<<<<<<< HEAD
-    "technical_analysis_results.csv")  # Note, this the 10 years TECHNICAL INDICATORS DATA. Decide which one to use.
-=======
-    "data/data_1d_10y_stationary.csv")  # Note, this the 10 years TECHNICAL INDICATORS DATA. Decide which one to use.
->>>>>>> 63864d56eb5b97c2f2ff4d42a248a8a1e47a6f19
+data = pd.read_csv("data/data_1d_10y_stationary.csv")  # Note, this the 10 years TECHNICAL INDICATORS DATA. Decide which one to use.
 
 data = data.drop(["Date"], axis=1)
 #data = fe.order_differencing(data, 1) #first order differencing
